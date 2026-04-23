@@ -1,0 +1,42 @@
+.header {
+    padding: 30px;
+}
+
+.label {
+    z-index: 1;
+}
+
+.first-line {
+    display: flex;
+    align-items: center;
+}
+
+.assignments-form {
+    display: flex;
+    gap: 20px;
+    padding-top: 20px;
+}
+
+.homework {
+    display: grid;
+    grid-template-columns: 3fr 2fr 1fr;
+    width: 100%;
+}
+
+.options {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+@media (max-width: 615px) {
+    .assignments-form {
+        flex-direction: column;
+        gap: 40px;
+        padding-top: 20px;
+    }
+
+    .form-input {
+        width: 100%;
+    }
+}

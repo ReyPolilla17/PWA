@@ -1,0 +1,86 @@
+<div class="header">
+  <div class="first-line">
+    @if(showPikachu) {
+      <img src="{{this.pikachu}}" alt="Pikachu">
+    }
+  
+    <h1 class="card p-1">Organizador de Tareas</h1>
+  </div>
+  <form [formGroup]="addForm" (submit)="agregar()">
+    <div class="assignments-form">
+      <p-floatlabel>
+        <label for="materia">Materia</label>
+        <input class="form-input" id="materia" pInputText formControlName="materia" autocomplete="off" [invalid]="addForm.get('materia')?.invalid && (addForm.get('materia')?.dirty || addForm.get('materia')?.touched) || (!valid && addForm.get('materia')?.invalid)"/>
+      </p-floatlabel>
+      
+      <p-floatlabel>
+        <label for="tarea">Tarea</label>
+        <input id="tarea" class="form-input" pInputText formControlName="desc" autocomplete="off" [invalid]="addForm.get('desc')?.invalid && (addForm.get('desc')?.dirty || addForm.get('desc')?.touched) || (!valid && addForm.get('desc')?.invalid)"/>
+      </p-floatlabel>
+    
+      <p-floatlabel>  
+        <label for="dueDate" class="label">Fecha de Entrega</label>
+        <p-datepicker class="form-input" formControlName="entrega" [iconDisplay]="'input'" [showIcon]="true" id="duedate" ngSkipHydration [invalid]="addForm.get('entrega')?.invalid && (addForm.get('entrega')?.dirty || addForm.get('entrega')?.touched)  || (!valid && addForm.get('entrega')?.invalid)"/>
+      </p-floatlabel>
+      
+      <button pButton pTooltip="Agregar tarea" tooltipPosition="bottom">
+          <i class="pi pi-plus"></i>
+      </button>
+    </div>
+  </form>
+
+</div>
+
+<div class="card sm:flex sm:justify-center header">
+  <h2>Pendientes</h2>
+  <p-orderlist [value]="tareas_pendientes" dataKey="id" [dragdrop]="true" [responsive]="true" breakpoint="575px" scrollHeight="20rem">
+    <ng-template let-option let-selected="selected" #item>
+      <div class="homework">
+        <div class="flex flex-wrap p-1 items-center gap-4 w-full">
+          <span class="font-medium text-sm"><strong>{{ option.materia }}:</strong> {{ option.desc }} <br> {{ option.entrega.toDateString() }}</span>
+          
+          @if(option.entrega < curdate) {
+            <p-tag value="Urgente" severity="danger" />
+          }
+        </div>
+
+        <div></div>
+
+        <div class="options">
+          <button pButton (click)="terminar(option)" pTooltip="Tarea terminada" tooltipPosition="bottom">
+              <i class="pi pi-check"></i>
+          </button>
+          
+          <button pButton severity="danger" (click)="eliminarPendiente(option)" pTooltip="Eliminar tarea" tooltipPosition="bottom">
+              <i class="pi pi-trash"></i>
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </p-orderlist>
+</div>
+
+<div class="card sm:flex sm:justify-center header">
+  <h2>Terminadas</h2>
+  <p-orderlist [value]="tareas_terminadas" dataKey="id" [dragdrop]="true" [responsive]="true" breakpoint="575px" scrollHeight="20rem">
+    <ng-template let-option let-selected="selected" #item>
+      <div class="homework">
+        <div class="flex flex-wrap p-1 items-center gap-4 w-full">
+          <span class="font-medium text-sm"><strong>{{ option.materia }}:</strong> {{ option.desc }} <br> {{ option.entrega.toDateString() }}</span>
+        </div>
+        
+        <div class="flex flex-wrap p-1 items-center gap-4 w-full">
+          <span class="font-medium text-sm">Entregada el {{ option.entregada.toDateString() }}</span>
+        </div>
+
+        <div class="options">
+          <button pButton severity="danger" (click)="eliminarEntregada(option)" pTooltip="Eliminar tarea" tooltipPosition="bottom">
+            <i class="pi pi-trash"></i>
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </p-orderlist>
+</div>
+
+<router-outlet />
